@@ -3,6 +3,7 @@ import "./login.less";
 import logo from "./images/music_on.png";
 import { Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import {reqLogin} from "../../api/index"
 
 // 登录组件
 class Login extends Component {
@@ -10,9 +11,11 @@ class Login extends Component {
     //通过包装得到了form对象
     const form = this.props.form;
 
-    const onFinish = values => {
+    const onFinish = async(values) => {
       const { username, password } = values;
       console.log(username, password);
+      const response=await reqLogin(username, password)
+      const result=response.data;
     };
     return (
       <div className="login">
