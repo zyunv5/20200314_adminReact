@@ -1,0 +1,27 @@
+.header {
+  height: 80px;
+  background-color: #fff;
+}
+.header .header-top {
+  border-bottom: 1px solid #1da57a;
+  height: 40px;
+  text-align: right;
+  line-height: 40px;
+  padding-right: 30px;
+}
+.header .header-top span {
+  margin-right: 10px;
+}
+.header .hedaer-bottom {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.header .hedaer-bottom .header-bottom-left {
+  width: 25%;
+  text-align: center;
+}
+.header .hedaer-bottom .header-bottom-right {
+  width: 75%;
+  text-align: right;
+}
