@@ -128,7 +128,7 @@ username=admin&password=admin
         "status": 1,
         "msg": "此用户已存在"
       }
-    
+
 ## 4. 获取所有用户列表
 ### 请求URL：
 	http://localhost:5000/manage/user/list
@@ -136,7 +136,7 @@ username=admin&password=admin
 ### 请求方式：
 	GET
 
-### 参数类型: 
+### 参数类型:
 	无
 
 ### 返回示例：
@@ -209,7 +209,7 @@ username=admin&password=admin
 ### 请求方式：
 	GET
 
-### 参数类型: 
+### 参数类型:
 	无
 
 ### 返回示例：
@@ -230,7 +230,7 @@ username=admin&password=admin
           }
         ]
       }
-      
+
 ## 7. 添加分类
 ### 请求URL：
     http://localhost:5000/manage/category/add
@@ -294,7 +294,7 @@ username=admin&password=admin
         "__v": 0
       }
     }
-    
+
 
 ## 10. 获取商品分页列表
 ### 请求URL：
@@ -627,7 +627,7 @@ username=admin&password=admin
 ### 请求方式：
     GET
 
-### 参数类型: 
+### 参数类型:
     无
 
 ### 返回示例：
@@ -690,7 +690,7 @@ username=admin&password=admin
     POST
 
 ### 参数类型:
-  
+
     |参数		     |是否必选  |类型     |说明
     |_id          |Y       |string   |角色ID
     |menus        |Y       |array    |权限key数组

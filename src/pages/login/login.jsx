@@ -12,13 +12,13 @@ class Login extends Component {
   render() {
     //如果用户已经登录，自动跳转到管理界面
     const user = memoryUtils.user;
-    console.log(user);
+    // console.log(user);
     if (user.username && user._id) {
       return <Redirect to="/" />;
     }
     const onFinish = async values => {
       const { username, password } = values;
-      console.log(username, password);
+      // console.log(username, password);
       const result = await reqLogin(username, password);
       if (result.status === 0) {
         message.success("登录成功");
