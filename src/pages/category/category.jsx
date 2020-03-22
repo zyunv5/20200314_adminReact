@@ -123,25 +123,25 @@ class Category extends Component {
 
   //添加分类
   addCategory = async () => {
-    console.log(this.add);
-    // if (!this.add[0].errors.length) {
-    //   //关闭模态框
-    //   this.setState({
-    //     showStatus: 0
-    //   })
-    //   //发请求更新分类
-    //   const result = await reqAddCategorys(this.add[1].value, this.add[0].value)
-    //   if (result.status === 0) {
-    //     // console.log(result)
-    //     if (this.add[0].value === this.state.parentId) {
-    //       // 给当前下的列表获取数据
-    //       this.getCategory()
-    //     } else if (this.add[0].value === '0') {
-    //       //二级列表里面给一级列表添加分类，更新一级，但是不显示
-    //       this.getCategory('0')
-    //     }
-    //   }
-    // }
+    // console.log(this.add)
+    if (!this.add[0].errors.length) {
+      //关闭模态框
+      this.setState({
+        showStatus: 0
+      })
+      //发请求更新分类
+      const result = await reqAddCategorys(this.add[1].value, this.add[0].value)
+      if (result.status === 0) {
+        // console.log(result)
+        if (this.add[0].value === this.state.parentId) {
+          // 给当前下的列表获取数据
+          this.getCategory()
+        } else if (this.add[0].value === '0') {
+          //二级列表里面给一级列表添加分类，更新一级，但是不显示
+          this.getCategory('0')
+        }
+      }
+    }
   }
   //更新分类
   updateCategory = async categoryName => {
@@ -202,6 +202,7 @@ class Category extends Component {
 
         <Modal title="添加分类" visible={showStatus === 1} onOk={this.addCategory} onCancel={this.handleCancel} destroyOnClose={true}>
           <AddForm
+          ref="form"
             categorys={dataSource}
             parentId={parentId}
             onChange={newFields => {

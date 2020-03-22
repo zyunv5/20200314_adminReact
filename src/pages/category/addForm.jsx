@@ -4,27 +4,23 @@ import PropTypes from 'prop-types'
 
 const { Option } = Select
 
+
 class AddForm extends Component {
   static propTypes = {
     categorys: PropTypes.array.isRequired,
     parentId: PropTypes.string.isRequired
   }
 
+
   render() {
+
     const { categorys, parentId, onChange } = this.props
-    const [form] = Form.useForm();
+
     return (
       <Form
-        form={form}
         initialValues={{ parentId, categoryName: '' }}
-        onFieldsChange={async (changedFields, allFields) => {
-          try {
-            const values = await form.validateFields()
-            console.log('Success:', values)
-            onChange(allFields)
-          } catch (errorInfo) {
-            console.log('Failed:', errorInfo)
-          }
+        onFieldsChange={(changedFields, allFields) => {
+          onChange(allFields)
         }}
       >
         <Form.Item name="parentId">
@@ -42,7 +38,8 @@ class AddForm extends Component {
           rules={[
             {
               required: true,
-              message: '分类名称必须输入'
+              message: '分类名称必须输入',
+              whitespace: true
             }
           ]}
         >

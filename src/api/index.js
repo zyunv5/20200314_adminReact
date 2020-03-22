@@ -16,6 +16,12 @@ export const reqAddCategorys = (categoryName, parentId) => ajax(BASEURL + '/mana
 //更新分类
 export const reqUpdateCategorys = (categoryId, categoryName) => ajax(BASEURL + '/manage/category/update', { categoryId, categoryName }, 'POST')
 
+//获取商品分页列表
+export const reqProducts = (pageNum, pageSize) => ajax(BASEURL + '/manage/product/list', { pageNum, pageSize })
+//根据Name搜索
+export const reqSearchProducts = (pageNum, pageSize, searchName, searchType) =>
+  ajax(BASEURL + '/manage/product/search', { pageNum, pageSize, [searchType]: searchName })
+
 //jsonp请求的接口函数
 export const reqWeather = city => {
   return new Promise((resolve, reject) => {

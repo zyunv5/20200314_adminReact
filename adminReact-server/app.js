@@ -13,6 +13,7 @@ app.use(bodyParser.json())
 //引入路由
 const user = require('./routes/user')
 const category = require('./routes/category')
+const product = require('./routes/product')
 
 //connect to mongoose
 mongoose
@@ -31,6 +32,7 @@ mongoose
 // 使用routes
 app.use('/login', user)
 app.use('/manage/category', category)
+app.use('/manage/product', product)
 
 //监听服务器端口号
 const port = process.env.PORT || 5000
