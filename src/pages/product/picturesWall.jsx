@@ -26,6 +26,10 @@ class PicturesWall extends React.Component {
     ]
   };
 
+  getImgs=()=>{
+    return this.state.fileList.map(file=>file.name);
+  }
+
   handleCancel = () => this.setState({ previewVisible: false }); //取消预览
 
   handlePreview = async file => {
@@ -69,7 +73,7 @@ class PicturesWall extends React.Component {
       <div className="clearfix">
         <Upload
           accept="image/*"
-          action=" http://localhost:5000/manage/img/upload"
+          action="/manage/img/upload"
           name="image"
           listType="picture-card"
           fileList={fileList}
