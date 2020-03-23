@@ -51,6 +51,7 @@ app.all('*', function(req, res, next) {
 app.use('/login', user)
 app.use('/manage/category', category)
 app.use('/manage/product', product)
+// console.log(111);
 
 //上传图片
 app.post('/manage/img/upload', (req, res) => {
