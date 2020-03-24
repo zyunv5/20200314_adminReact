@@ -1,8 +1,9 @@
 // @login & register
 const express = require("express");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const router = express.Router();
+const key = require("../config/key");
 
 //加载category model
 //加载user model
@@ -14,24 +15,39 @@ const User = mongoose.model("users");
 //   res.send('this is home page')
 // })
 
-const hash=bcrypt.createHash("md5");
-//require('crypto').createHash('md5').update(clearText).digest('hex');
+//加入md5加密
+const md5 = data => {
+  let hash = crypto.createHash("md5");
+  return hash.update(data).digest("hex");
+};
+
+//加入私匙
+const encryption = data => md5(md5(data) + key.private_key);
 
 //登录接口
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  User.find({ username, password })
+  User.find({ username })
     .then(response => {
-      response.length > 0
-        ? res.json({
+      if (response.length > 0) {
+        if (response[0].password === encryption(password)) {
+          res.json({
             status: 0,
             msg: "查询成功",
             data: response[0]
-          })
-        : res.json({
-            status: 1,
-            msg: "查询失败"
           });
+        } else {
+          res.json({
+            status: 1,
+            msg: "密码错误"
+          });
+        }
+      } else {
+        res.json({
+          status: 1,
+          msg: "查询失败"
+        });
+      }
     })
     .catch(err => {
       console.log(err);
