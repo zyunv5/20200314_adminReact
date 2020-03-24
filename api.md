@@ -459,7 +459,7 @@ username=admin&password=admin
 ### 请求URL：
     http://localhost:5000/manage/product/info
 
-   
+
 
 ### 请求方式：
     GET
