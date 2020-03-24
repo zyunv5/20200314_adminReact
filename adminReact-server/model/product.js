@@ -23,10 +23,10 @@ const ProductSchema = new Schema({
     type: Number,
     required: true
   },
-  categoryId: {
-    type: String,
-    required: true
-  },
+  // categoryId: { //商品分类id，参与者退出了直播间
+  //   type: String,
+  //   required: true
+  // },
   detail: {
     type: String,
     required: true

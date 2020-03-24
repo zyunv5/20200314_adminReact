@@ -1,19 +1,39 @@
 import React, { Component } from "react";
-import { Form, Input, Card, Cascader, Upload, message, Button } from "antd";
+import { Form, Input, Card, message, Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "../../component/link-button";
-import PicturesWall from "./picturesWall"
+import PicturesWall from "./picturesWall";
+import RichTextEditor from "./richTextEditor";
+import { reqAddOrUpdateProduct } from "../../api";
+
 const { TextArea } = Input;
 
 //product 的默认子路由组件
 class ProductAddUpdate extends Component {
+  constructor(props) {
+    super(props);
+    //创建用来保存ref标识的标签对象容器
+    this.pw = React.createRef();
+    this.editor = React.createRef();
+  }
+
   render() {
+    const type = this.props.location.state[1];
+    // console.log(this.props);
+    let [name, desc, price, imgs, detail, status] = ["", "", 0, [], "", 1];
+    if (type === 2) {
+      name = this.props.location.state[0].name;
+      desc = this.props.location.state[0].desc;
+      price = this.props.location.state[0].price;
+      imgs = this.props.location.state[0].imgs;
+      detail = this.props.location.state[0].detail;
+    }
     const title = (
       <span>
         <LinkButton>
-          <ArrowLeftOutlined />
+          <ArrowLeftOutlined onClick={() => this.props.history.goBack()} />
         </LinkButton>
-        <span>添加商品</span>
+        <span>{type === 2 ? "修改商品" : "新增商品"}</span>
       </span>
     );
 
@@ -23,8 +43,31 @@ class ProductAddUpdate extends Component {
       wrapperCol: { span: 10 } //指定右侧包裹的宽度
     };
 
-    const onFinish = values => {
+    const onFinish = async values => {
       console.log("Success:", values);
+
+      const imgs = this.pw.current.getImgs();
+      console.log(imgs);
+
+      const detail = this.editor.current.getDetail();
+      console.log(detail);
+
+      let productId = null,status=null;
+      if (this.props.location.state[1] === 2) {
+        productId = this.props.location.state[0]._id;
+        status = this.props.location.state[0].status;
+      }
+
+      const product = { _id: productId,status, ...values, imgs: imgs, detail: detail };
+      const result = await reqAddOrUpdateProduct(product);
+      if(result.status===0){
+        message.success("成功");
+        this.props.history.goBack();
+      }else{
+        message.error("失败")
+      }
+
+      console.log(result);
     };
 
     return (
@@ -32,8 +75,11 @@ class ProductAddUpdate extends Component {
         <Form
           {...layout}
           initialValues={{
-            name: "",
-            desc: ""
+            name,
+            desc,
+            price,
+            imgs,
+            detail
           }}
           onFinish={onFinish}
         >
@@ -64,9 +110,7 @@ class ProductAddUpdate extends Component {
                   if (value > 0) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(
-                    "价格必须大于0"
-                  );
+                  return Promise.reject("价格必须大于0");
                 }
               })
             ]}
@@ -77,10 +121,15 @@ class ProductAddUpdate extends Component {
             <div>商品分类</div>
           </Form.Item> */}
           <Form.Item label="商品图片" name="price">
-            <PicturesWall/>
+            <PicturesWall ref={this.pw} imgs={imgs} />
           </Form.Item>
-          <Form.Item label="商品详情" name="price">
-            <div>商品分类</div>
+          <Form.Item
+            label="商品详情"
+            name="detail"
+            labelCol={{ span: 2 }}
+            wrapperCol={{ span: 18 }}
+          >
+            <RichTextEditor ref={this.editor} detail={detail} />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">

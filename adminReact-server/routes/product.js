@@ -140,9 +140,38 @@ router.post("/updateStatus", (req, res) => {
       res.json({
         status: 0,
         msg: "修改成功"
-      })
+      });
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
+});
+
+//新增商品
+router.post("/add", (req, res) => {
+  // console.log(req.body)
+  const { name, desc, price, imgs, detail } = req.body;
+  new Product({ name, desc, price, imgs, detail, status: 1 })
+    .save()
+    .then(response => {
+      res.json({
+        status: 0,
+        data: response
+      });
+    })
+    .catch(err => console.log(err));
+});
+
+//更新商品
+router.post("/update", (req, res) => {
+  // console.log(req.body)
+  const { name, desc, price, imgs, detail, status, _id } = req.body;
+  Product.updateOne({_id:_id}, { name, desc, price, imgs, detail, status })
+    .then(response => {
+      res.json({
+        status: 0,
+        data: response
+      });
+    })
+    .catch(err => console.log(err));
 });
 
 module.exports = router;

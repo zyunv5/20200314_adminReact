@@ -28,7 +28,7 @@ export const reqUpdateCategorys = (categoryId, categoryName) =>
 //获取商品分页列表
 export const reqProducts = (pageNum, pageSize) =>
   ajax(BASEURL + "/manage/product/list", { pageNum, pageSize });
-//根据Name，desc搜索
+//根据Name，desc搜索商品
 export const reqSearchProducts = (pageNum, pageSize, searchName, searchType) =>
   ajax(BASEURL + "/manage/product/search", {
     pageNum,
@@ -36,10 +36,24 @@ export const reqSearchProducts = (pageNum, pageSize, searchName, searchType) =>
     [searchType]: searchName
   });
 //更新商品的状态（上架/下架）
-export const reqUpdateStatus = (productId,status) =>
-  ajax(BASEURL + "/manage/product/updateStatus", {
-    productId,status
-  },"POST");
+export const reqUpdateStatus = (productId, status) =>
+  ajax(
+    BASEURL + "/manage/product/updateStatus",
+    {
+      productId,
+      status
+    },
+    "POST"
+  );
+//删除图片
+export const reqDeleteImg = name =>
+  ajax(BASEURL + "/manage/img/delete", { name }, "POST");
+//添加or更新商品
+export const reqAddOrUpdateProduct = product => {
+  let pid = product._id,uri=null;
+  pid ?uri="update": uri="add" ;
+  return ajax(BASEURL + "/manage/product/" + uri, product, "POST");
+};
 
 //jsonp请求的接口函数
 export const reqWeather = city => {
