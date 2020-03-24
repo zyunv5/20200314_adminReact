@@ -12,12 +12,18 @@ const UserSchema = new Schema({
     required: true
   },
   email: {
-    type: String,
+    type: String
   },
-  date: {
+  phone: {
+    type: String
+  },
+  role_id: {
+    type: String
+  },
+  create_time: {
     type: Date,
     default: Date.now
-  },
-})
+  }
+});
 
-mongoose.model("users",UserSchema);
+mongoose.model("users", UserSchema);

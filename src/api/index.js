@@ -6,7 +6,7 @@ import { message } from "antd";
 const BASEURL = "";
 //登录
 export const reqLogin = (username, password) =>
-  ajax(BASEURL + "/login", { username, password }, "POST");
+  ajax(BASEURL + "/user/login", { username, password }, "POST");
 //添加用户
 export const reqAddUser = user =>
   ajax(BASEURL + "/manage/user/add", user, "POST");
