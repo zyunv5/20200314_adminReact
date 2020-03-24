@@ -20,7 +20,7 @@ class ProductAddUpdate extends Component {
   render() {
     const type = this.props.location.state[1];
     // console.log(this.props);
-    let [name, desc, price, imgs, detail, status] = ["", "", 0, [], "", 1];
+    let [name, desc, price, imgs, detail] = ["", "", 0, [], ""];
     if (type === 2) {
       name = this.props.location.state[0].name;
       desc = this.props.location.state[0].desc;
@@ -28,6 +28,7 @@ class ProductAddUpdate extends Component {
       imgs = this.props.location.state[0].imgs;
       detail = this.props.location.state[0].detail;
     }
+    
     const title = (
       <span>
         <LinkButton>
