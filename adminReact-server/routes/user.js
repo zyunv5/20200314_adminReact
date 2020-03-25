@@ -163,22 +163,23 @@ router.post("/update", (req, res) => {
 //删除用户
 router.post("/delete", (req, res) => {
   // const { username, password } = req.body
-  // User.find({ username, password })
-  //   .then(response => {
-  //     response.length > 0
-  //       ? res.json({
-  //           status: 0,
-  //           msg: '查询成功',
-  //           data: response[0]
-  //         })
-  //       : res.json({
-  //           status: 1,
-  //           msg: '查询失败'
-  //         })
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
+  const { userId } = req.body;
+  User.deleteOne({ _id: userId })
+    .then(response => {
+      console.log(response);
+      response.ok === 1
+        ? res.json({
+            status: 0,
+            msg: '删除成功',
+          })
+        : res.json({
+            status: 1,
+            msg: '删除失败'
+          })
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 module.exports = router;

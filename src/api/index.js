@@ -55,6 +55,8 @@ export const reqUpdateRoles = (role)=> ajax(BASEURL + '/manage/role/update',role
 
 //获取用户列表
 export const reqUsers = ()=> ajax(BASEURL + '/user/list')
+//删除用户
+export const reqDeleteUsers = (userId)=> ajax(BASEURL + '/user/delete',{userId},"POST")
 
 //jsonp请求的接口函数
 export const reqWeather = city => {
