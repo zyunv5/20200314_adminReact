@@ -103,6 +103,7 @@ router.post("/update", (req, res) => {
   const { _id, name, create_time, auth_time, auth_name, menus } = req.body;
   Role.updateOne({ _id }, { auth_time, auth_name, menus })
     .then(response => {
+      console.log(response)
       response.ok ===1
         ? res.json({
             status: 0,

@@ -7,7 +7,7 @@ const BASEURL = ''
 //登录
 export const reqLogin = (username, password) => ajax(BASEURL + '/user/login', { username, password }, 'POST')
 //添加用户
-export const reqAddUser = user => ajax(BASEURL + '/manage/user/add', user, 'POST')
+// export const reqAddUser = user => ajax(BASEURL + '/manage/user/add', user, 'POST')
 
 //获取一级/二级分类的列表
 export const reqCategorys = parentId => ajax(BASEURL + '/manage/category/list', { parentId })
@@ -47,16 +47,18 @@ export const reqAddOrUpdateProduct = product => {
 }
 
 //获取角色列表
-export const reqRoles = ()=> ajax(BASEURL + '/manage/role/list')
+export const reqRoles = () => ajax(BASEURL + '/manage/role/list')
 //添加角色
-export const reqAddRoles = (name)=> ajax(BASEURL + '/manage/role/add',{name},"POST")
+export const reqAddRoles = name => ajax(BASEURL + '/manage/role/add', { name }, 'POST')
 //更新角色
-export const reqUpdateRoles = (role)=> ajax(BASEURL + '/manage/role/update',role,"POST")
+export const reqUpdateRoles = role => ajax(BASEURL + '/manage/role/update', role, 'POST')
 
 //获取用户列表
-export const reqUsers = ()=> ajax(BASEURL + '/user/list')
+export const reqUsers = () => ajax(BASEURL + '/user/list')
 //删除用户
-export const reqDeleteUsers = (userId)=> ajax(BASEURL + '/user/delete',{userId},"POST")
+export const reqDeleteUsers = userId => ajax(BASEURL + '/user/delete', { userId }, 'POST')
+//添加/更新 用户
+export const reqAddOrUpdateUser = user => ajax(BASEURL + '/user/' + (user._id ? 'update' : 'add'), user, 'POST')
 
 //jsonp请求的接口函数
 export const reqWeather = city => {
