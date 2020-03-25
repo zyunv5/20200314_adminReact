@@ -34,7 +34,7 @@ class Admin extends Component {
             <Header />
             <div>hello {user.username}</div>
           </Header>
-          <Content style={{ margin:20 }}>
+          <Content style={{ margin: 20 }}>
             <Switch>
               <Route path="/home" component={Home}></Route>
               <Route path="/category" component={Category}></Route>

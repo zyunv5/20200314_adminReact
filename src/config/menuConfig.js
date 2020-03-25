@@ -21,7 +21,6 @@ const menuList = [
     key: "/products",
     icon: <AppstoreOutlined />,
     children: [
-      // 子菜单列表
       {
         title: "品类管理",
         key: "/category",
@@ -34,7 +33,6 @@ const menuList = [
       }
     ]
   },
-
   {
     title: "用户管理",
     key: "/user",
@@ -45,7 +43,6 @@ const menuList = [
     key: "/role",
     icon: <DesktopOutlined />
   },
-
   {
     title: "图形图表",
     key: "/charts",

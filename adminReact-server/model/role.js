@@ -11,12 +11,12 @@ const RoleSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  auth_name: {
+    type: String,
+  },
   auth_time: {
     type: Date,
     default: Date.now
-  },
-  auth_name: {
-    type: String,
   },
   menus: {
     type: Array
