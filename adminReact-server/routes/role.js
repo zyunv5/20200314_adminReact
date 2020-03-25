@@ -100,9 +100,7 @@ router.get("/list", (req, res) => {
 
 //更新角色
 router.post("/update", (req, res) => {
-  // console.log(req.body);
   const { _id, name, create_time, auth_time, auth_name, menus } = req.body;
-  // const { username, password } = req.body
   Role.updateOne({ _id }, { auth_time, auth_name, menus })
     .then(response => {
       response.ok ===1

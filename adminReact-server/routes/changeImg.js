@@ -7,7 +7,6 @@ const router = express.Router();
 //上传图片
 router.post("/upload", (req, res) => {
   const newName = req.files[0].path + path.extname(req.files[0].originalname);
-  // console.log(req.files[0].originalname, newName)
   fs.rename(req.files[0].path, newName, err => {
     if (err) {
       throw err;
