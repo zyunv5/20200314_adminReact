@@ -13,7 +13,7 @@ class UserForm extends PureComponent {
 
   render() {
     const { onChange, roles } = this.props
-    const user = this.props.user || {}
+    const user = this.props.user
 
     const layout = {
       labelCol: { span: 4 }, //左侧label的宽度

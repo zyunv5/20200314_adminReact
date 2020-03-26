@@ -56,7 +56,6 @@ class Header extends Component {
       title: '确定退出吗?',
       icon: <ExclamationCircleOutlined />,
       onOk: () => {
-        console.log('OK')
         //删除user数据
         storageUtils.removeUser()
         memoryUtils.user = {}

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const RoleSchema = new Schema({
   name: {
@@ -12,7 +12,7 @@ const RoleSchema = new Schema({
     default: Date.now
   },
   auth_name: {
-    type: String,
+    type: String
   },
   auth_time: {
     type: Date,
@@ -20,7 +20,11 @@ const RoleSchema = new Schema({
   },
   menus: {
     type: Array
+  },
+  role_id: {
+    type: Schema.Types.ObjectId,
+    ref: "role_id"
   }
-})
+});
 
-mongoose.model('role', RoleSchema, 'role')
+mongoose.model("role", RoleSchema, "role");

@@ -4,11 +4,27 @@ import { Link, withRouter } from "react-router-dom";
 import { Menu } from "antd";
 import menuList from "../../config/menuConfig";
 import logo from "../../assets/images/music_off.png";
+import storageUtils from "../../utils/localStorageUtils";
+import memoryUtils from "../../utils/memoryUtils"
 import "./index.less";
 
 const { SubMenu } = Menu;
 
 class LeftNav extends Component {
+  //判断当前登录用户对item是否由权限
+  hasAuth = item => {
+    // 当前是admin 看key在不在menus中 item是公开的
+    //indexOf() 找不到的返回-1 对大小写敏感
+    // const { key, isPublic } = item;
+
+    // const menus = storageUtils.getUser().role.menus;
+    // const username = storageUtils.getUser().username;
+
+    // if (username === "admin" || item.isPublic || menus.indexOf(key) !== -1) {
+    //   return true;
+    // }
+    return true;
+  };
   //根据menu数组生成对应的数组,map加递归
   // getMenuNodes_map = menuList => {
   //   return menuList.map(item => {
@@ -38,6 +54,7 @@ class LeftNav extends Component {
   //     }
   //   });
   // };
+
   //根据menu数组生成对应的数组,reduce加递归
   getMenuNodes = menuList => {
     //得到当前请求的路由路径
@@ -46,45 +63,50 @@ class LeftNav extends Component {
 
     return menuList.reduce((pre, item) => {
       //向pre中添加Menu.item
-      if (!item.children) {
-        pre.push(
-          <Menu.Item key={item.key}>
-            <Link to={item.key}>
-              {item.icon}
-              <span>{item.title}</span>
-            </Link>
-          </Menu.Item>
-        );
-      } else {
-        //查找一个与当前请求路径匹配的子item
-        const sItem = item.children.find(sItem => sItem.key === path);
-        //如果查找到了
-        if(sItem){this.openKey = item.key}
-        //向pre中添加SubMenu
-        pre.push(
-          <SubMenu
-            key={item.key}
-            title={
-              <span>
+      //如果当前用户有item对应的权限，才显示对应的菜单项
+      if (this.hasAuth(item)) {
+        if (!item.children) {
+          pre.push(
+            <Menu.Item key={item.key}>
+              <Link to={item.key}>
                 {item.icon}
                 <span>{item.title}</span>
-              </span>
-            }
-          >
-            {this.getMenuNodes(item.children)}
-          </SubMenu>
-        );
+              </Link>
+            </Menu.Item>
+          );
+        } else {
+          //查找一个与当前请求路径匹配的子item
+          const sItem = item.children.find(sItem => sItem.key === path);
+          //如果查找到了
+          if (sItem) {
+            this.openKey = item.key;
+          }
+          //向pre中添加SubMenu
+          pre.push(
+            <SubMenu
+              key={item.key}
+              title={
+                <span>
+                  {item.icon}
+                  <span>{item.title}</span>
+                </span>
+              }
+            >
+              {this.getMenuNodes(item.children)}
+            </SubMenu>
+          );
+        }
       }
       return pre;
     }, []); //第二个参数为初始值，初始值是个空数组
   };
-  componentWillMount(){
+  componentWillMount() {
     //这里提前循环，设置出节点
-    this.menuNodes=this.getMenuNodes(menuList);
+    this.menuNodes = this.getMenuNodes(menuList);
   }
   render() {
     const path = this.props.location.pathname;
-    const openKey=this.openKey
+    const openKey = this.openKey;
     return (
       <div className="left-nav">
         <Link to="/" className="left-nav-header">
