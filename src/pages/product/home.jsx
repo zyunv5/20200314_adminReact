@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Card, Select, Input, Button, Table, message } from 'antd'
 import LinkButton from '../../component/link-button'
 import { reqProducts, reqSearchProducts, reqUpdateStatus } from '../../api'
@@ -8,7 +8,7 @@ import './product.less'
 const Option = Select.Option
 
 //product 的默认子路由组件
-export default class ProductHome extends Component {
+export default class ProductHome extends PureComponent {
   state = {
     total: 0,
     products: [],
@@ -145,6 +145,7 @@ export default class ProductHome extends Component {
           dataSource={products}
           columns={this.columns}
           pagination={{
+        current:this.pageNum,
             total,
             defaultPageSize: PAGE_SIZE,
             showQuickJumper: true,

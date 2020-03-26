@@ -15,15 +15,15 @@ class LeftNav extends Component {
   hasAuth = item => {
     // 当前是admin 看key在不在menus中 item是公开的
     //indexOf() 找不到的返回-1 对大小写敏感
-    // const { key, isPublic } = item;
+    const { key, isPublic } = item;
 
-    // const menus = storageUtils.getUser().role.menus;
-    // const username = storageUtils.getUser().username;
+    const menus = storageUtils.getUser().menus;
+    const username = storageUtils.getUser().username;
 
-    // if (username === "admin" || item.isPublic || menus.indexOf(key) !== -1) {
-    //   return true;
-    // }
-    return true;
+    if (username === "admin" || item.isPublic || menus.indexOf(key) !== -1) {
+      return true;
+    }
+    return false;
   };
   //根据menu数组生成对应的数组,map加递归
   // getMenuNodes_map = menuList => {

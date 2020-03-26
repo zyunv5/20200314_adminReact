@@ -30,14 +30,14 @@ router.get("/addFake", (req, res) => {
 router.get("/list", (req, res) => {
   const { pageNum, pageSize } = req.query;
   Product.estimatedDocumentCount().then(response => {
-    const total = response;
-    const pages = response / pageSize;
-    if (pageNum > pages) {
-      res.json({
-        status: 1,
-        msg: "页码大于数据总和"
-      });
-    } else {
+    const total = response;//总的条数
+    const pages = response / pageSize;//总页数
+    // if (pageNum > pages) {
+    //   res.json({
+    //     status: 1,
+    //     msg: "页码大于数据总和"
+    //   });
+    // } else {
       Product.find({})
         .skip(pageSize * (pageNum - 1))
         .limit(+pageSize)
@@ -58,7 +58,7 @@ router.get("/list", (req, res) => {
                 msg: "查询失败"
               });
         });
-    }
+    // }
   });
 });
 

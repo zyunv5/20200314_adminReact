@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import { Card, Button, Table, Modal, message } from "antd";
-import { PAGE_SIZE } from "../../utils/constants";
-import { reqRoles, reqAddRoles, reqUpdateRoles } from "../../api";
-import AddForm from "./addForm";
-import AuthForm from "./authForm";
-import storageUtils from "../../utils/localStorageUtils";
-import { formateDate } from "../../utils/dateUtils";
+import React, { Component } from 'react'
+import { Card, Button, Table, Modal, message } from 'antd'
+import { PAGE_SIZE } from '../../utils/constants'
+import { reqRoles, reqAddRoles, reqUpdateRoles } from '../../api'
+import AddForm from './addForm'
+import AuthForm from './authForm'
+import storageUtils from '../../utils/localStorageUtils'
+import { formateDate } from '../../utils/dateUtils'
+import memoryUtils from '../../utils/memoryUtils'
 
 export default class Role extends Component {
   state = {
@@ -14,115 +15,122 @@ export default class Role extends Component {
     loading: false,
     isShowAdd: false,
     isShowAuth: false
-  };
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.auth = React.createRef();
+    this.auth = React.createRef()
   }
 
   onRow = role => {
     return {
       onClick: event => {
         // console.log(role,event);
-        this.setState({ role });
+        this.setState({ role })
       }
-    };
-  };
+    }
+  }
 
   //初始化列的名称
   initColumns = () => {
     this.columns = [
       {
-        title: "角色名称",
-        dataIndex: "name"
+        title: '角色名称',
+        dataIndex: 'name'
       },
       {
-        title: "创建时间",
-        dataIndex: "create_time",
+        title: '创建时间',
+        dataIndex: 'create_time',
         render: create_time => formateDate(create_time)
       },
       {
-        title: "授权时间",
-        dataIndex: "auth_time",
+        title: '授权时间',
+        dataIndex: 'auth_time',
         render: auth_time => formateDate(auth_time)
       },
       {
-        title: "授权人",
-        dataIndex: "auth_name"
+        title: '授权人',
+        dataIndex: 'auth_name'
       }
-    ];
-  };
+    ]
+  }
 
   getRoles = async () => {
-    this.setState({ loading: true });
-    let result = await reqRoles();
+    this.setState({ loading: true })
+    let result = await reqRoles()
     // console.log(result);
     if (result.status === 0) {
       this.setState({
         roles: result.data,
         loading: false
-      });
+      })
     }
-  };
+  }
 
   //添加角色
   addRole = async () => {
     // console.log(this.add[0].value);
-    let name = this.add[0].value;
-    let result = await reqAddRoles(name);
+    let name = this.add[0].value
+    let result = await reqAddRoles(name)
     if (result.status === 0) {
       // console.log(result);
-      message.success("添加成功");
-      this.setState({ isShowAdd: false });
+      message.success('添加成功')
+      this.setState({ isShowAdd: false })
       // this.getRoles();
-      const role = result.data;
+      const role = result.data
       //更新状态
       this.setState(state => {
-        return { roles: [...state.roles, role] };
-      });
+        return { roles: [...state.roles, role] }
+      })
     } else {
-      message.error("添加失败");
+      message.error('添加失败')
     }
-  };
+  }
 
   //更新角色
   updateRole = async () => {
-    const role = this.state.role;
-    const menus = this.auth.current.getMenus();
-    role.menus = menus;
-    role.auth_name = storageUtils.getUser().username;
-    role.auth_time = Date.now();
-    const result = await reqUpdateRoles(role);
+    const role = this.state.role
+    const menus = this.auth.current.getMenus()
+    role.menus = menus
+    role.auth_name = storageUtils.getUser().username
+    role.auth_time = Date.now()
+    const result = await reqUpdateRoles(role)
     if (result.status === 0) {
-      message.success("更新成功");
+      message.success('更新成功')
       this.setState({
         isShowAuth: false
-      });
-      this.getRoles();
+      })
+      //当个人修改了个人权限的时候，需要退出登录
+      if (role._id === memoryUtils.user.role_id) {
+        storageUtils.removeUser()
+        memoryUtils.user = {}
+        this.props.history.replace('/login')
+      } else {
+        this.getRoles()
+      }
     } else {
-      message.success("更新失败");
+      message.success('更新失败')
     }
-  };
+  }
 
   componentWillMount() {
-    this.initColumns();
+    this.initColumns()
   }
 
   componentDidMount() {
-    this.getRoles();
+    this.getRoles()
   }
 
   render() {
-    const { roles, loading, role, isShowAdd, isShowAuth } = this.state;
+    const { roles, loading, role, isShowAdd, isShowAuth } = this.state
     const title = (
       <span>
         <Button
           type="primary"
           style={{ marginRight: 10 }}
           onClick={() => {
-            this.setState({ isShowAdd: true });
+            this.setState({ isShowAdd: true })
           }}
         >
           创建角色
@@ -131,21 +139,24 @@ export default class Role extends Component {
           type="primary"
           disabled={!role._id}
           onClick={() => {
-            this.setState({ isShowAuth: true });
+            this.setState({ isShowAuth: true })
           }}
         >
           设置角色权限
         </Button>
       </span>
-    );
+    )
     return (
       <Card title={title}>
         <Table
           loading={loading}
           onRow={this.onRow}
           rowSelection={{
-            type: "radio",
-            selectedRowKeys: [role._id]
+            type: 'radio',
+            selectedRowKeys: [role._id],
+            onSelect:(role)=>{
+              this.setState({role})
+            }
           }}
           bordered
           rowKey="_id"
@@ -164,13 +175,13 @@ export default class Role extends Component {
           onCancel={() => {
             this.setState({
               isShowAdd: false
-            });
+            })
           }}
           destroyOnClose={true}
         >
           <AddForm
             onChange={newFields => {
-              this.add = newFields;
+              this.add = newFields
             }}
           />
         </Modal>
@@ -182,13 +193,13 @@ export default class Role extends Component {
           onCancel={() => {
             this.setState({
               isShowAuth: false
-            });
+            })
           }}
           destroyOnClose={true}
         >
           <AuthForm role={role} ref={this.auth} />
         </Modal>
       </Card>
-    );
+    )
   }
 }
