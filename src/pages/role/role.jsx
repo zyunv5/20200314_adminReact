@@ -4,10 +4,12 @@ import { PAGE_SIZE } from "../../utils/constants";
 import { reqRoles, reqAddRoles, reqUpdateRoles } from "../../api";
 import AddForm from "./addForm";
 import AuthForm from "./authForm";
-import storageUtils from "../../utils/localStorageUtils";
+// import storageUtils from "../../utils/localStorageUtils";
 import { formateDate } from "../../utils/dateUtils";
+import { connect } from "react-redux";
+import { logout } from "../../redux/actions";
 
-export default class Role extends Component {
+class Role extends Component {
   state = {
     roles: [],
     role: {},
@@ -89,18 +91,22 @@ export default class Role extends Component {
 
   //更新角色
   updateRole = async () => {
+    this.setState({
+      isShowAuth: false
+    });
     const role = this.state.role;
     const menus = this.auth.current.getMenus();
     role.menus = menus;
-    role.auth_name = storageUtils.getUser().username;
+    // role.auth_name = storageUtils.getUser().username;
+    role.auth_name = this.props.user.username;
     role.auth_time = Date.now();
     const result = await reqUpdateRoles(role);
     if (result.status === 0) {
-      message.success("更新成功");
-      this.setState({
-        isShowAuth: false
-      });
-      this.getRoles();
+      if(role._id===this.props.user.role_id){//如果改动了自己的权限
+        this.props.logout()
+        message.success("更新成功");
+      }
+      // this.getRoles();
     } else {
       message.success("更新失败");
     }
@@ -192,3 +198,5 @@ export default class Role extends Component {
     );
   }
 }
+
+export default connect(state => ({ user: state.user }),{logout})(Role);

@@ -4,8 +4,10 @@ import { Link, withRouter } from "react-router-dom";
 import { Menu } from "antd";
 import menuList from "../../config/menuConfig";
 import logo from "../../assets/images/music_off.png";
-import storageUtils from "../../utils/localStorageUtils";
-import memoryUtils from "../../utils/memoryUtils"
+// import storageUtils from "../../utils/localStorageUtils";
+// import memoryUtils from "../../utils/memoryUtils";
+import { connect } from "react-redux";
+import { setHeadTitle } from "../../redux/actions";
 import "./index.less";
 
 const { SubMenu } = Menu;
@@ -14,15 +16,17 @@ class LeftNav extends Component {
   //判断当前登录用户对item是否由权限
   hasAuth = item => {
     // 当前是admin 看key在不在menus中 item是公开的
-    //indexOf() 找不到的返回-1 对大小写敏感
-    // const { key, isPublic } = item;
+    // indexOf() 找不到的返回-1 对大小写敏感
+    const { key, isPublic } = item;
 
-    // const menus = storageUtils.getUser().role.menus;
+    // const menus = storageUtils.getUser().menus;
     // const username = storageUtils.getUser().username;
+    const menus = this.props.user.menus;
+    const username = this.props.user.username;
 
-    // if (username === "admin" || item.isPublic || menus.indexOf(key) !== -1) {
-    //   return true;
-    // }
+    if (username === "admin" || isPublic || menus.indexOf(key) !== -1) {
+      return true;
+    }
     return true;
   };
   //根据menu数组生成对应的数组,map加递归
@@ -66,9 +70,16 @@ class LeftNav extends Component {
       //如果当前用户有item对应的权限，才显示对应的菜单项
       if (this.hasAuth(item)) {
         if (!item.children) {
+          //判断item是否是当前对应的item,是的话，放入redux中
+          if (item.key === path || path.indexOf(item.key) === 0) {
+            this.props.setHeadTitle(item.title);
+          }
           pre.push(
             <Menu.Item key={item.key}>
-              <Link to={item.key}>
+              <Link
+                to={item.key}
+                onClick={() => this.props.setHeadTitle(item.title)}
+              >
                 {item.icon}
                 <span>{item.title}</span>
               </Link>
@@ -126,4 +137,4 @@ class LeftNav extends Component {
   }
 }
 //withRouter高阶组件：包装非路由组件，返回一个新的组件。新的组件向非路由组件传递3个属性：history/location/match
-export default withRouter(LeftNav);
+export default connect(state => ({user:state.user}), { setHeadTitle })(withRouter(LeftNav));

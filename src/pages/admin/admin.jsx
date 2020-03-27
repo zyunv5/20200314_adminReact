@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import memoryUtils from "../../utils/memoryUtils";
+// import memoryUtils from "../../utils/memoryUtils";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import LeftNav from "../../component/leftNav";
@@ -13,12 +13,14 @@ import Bar from "../../pages/charts/bar";
 import Line from "../../pages/charts/line";
 import Pie from "../../pages/charts/pie";
 import "./admin.less";
+import {connect} from "react-redux"
 const { Footer, Sider, Content } = Layout;
 
 // 后台管理的路由组件
 class Admin extends Component {
   render() {
-    const user = memoryUtils.user;
+    // const user = memoryUtils.user;
+    const user = this.props.user;
     //如果内存中没有user==>当前没有登录
     if (!user || !user._id) {
       //自动跳转到登录(在render()中)
@@ -56,4 +58,4 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+export default connect(state=>({user:state.user}))(Admin);

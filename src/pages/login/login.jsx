@@ -5,33 +5,40 @@ import logo from "./images/music_on.png";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { reqLogin } from "../../api/index";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/localStorageUtils";
+// import memoryUtils from "../../utils/memoryUtils";
+// import storageUtils from "../../utils/localStorageUtils";
+import { connect } from "react-redux";
+import { login } from "../../redux/actions";
+
 // 登录组件
 class Login extends Component {
   render() {
     //如果用户已经登录，自动跳转到管理界面
-    const user = memoryUtils.user;
-    // console.log(user);
+    // const user = memoryUtils.user;
+    const user = this.props.user;
     if (user.username && user._id) {
       return <Redirect to="/" />;
     }
+    const errorMsg = this.props.user.errorMsg;
+
     const onFinish = async values => {
       const { username, password } = values;
-      // console.log(username, password);
-      const result = await reqLogin(username, password);
-      if (result.status === 0) {
-        message.success("登录成功");
+      // const result = await reqLogin(username, password);
+      // if (result.status === 0) {
+      //   message.success("登录成功");
 
-        const user = result.data;
-        memoryUtils.user = user; //保存到内存中
-        storageUtils.saveUser(user); //保存到local中
+      //   const user = result.data;
+      //   memoryUtils.user = user; //保存到内存中
+      //   storageUtils.saveUser(user); //保存到local中
 
-        //跳转到管理界面（不需要回退，用replace）
-        this.props.history.replace("admin");
-      } else {
-        message.error(result.msg);
-      }
+      //   //跳转到管理界面（不需要回退，用replace）
+      //   this.props.history.replace("admin");
+      // } else {
+      //   message.error(result.msg);
+      // }
+
+      //调用分发异步action的函数=>发login的请求，有了结果后，更新状态
+      this.props.login(username, password);
     };
     return (
       <div className="login">
@@ -40,6 +47,9 @@ class Login extends Component {
           <h1>后台管理系统</h1>
         </header>
         <section className="login-content">
+          <div className={user.errorMsg ? "error-msg show" : "error-msg"}>
+            {user.errorMsg}
+          </div>
           <h2>用户登录</h2>
           <Form
             name="normal_login"
@@ -115,4 +125,4 @@ class Login extends Component {
 // const WrapLogin = Form.create()(Login);
 // export default WrapLogin;
 
-export default Login;
+export default connect(state => ({ user: state.user }), { login })(Login);

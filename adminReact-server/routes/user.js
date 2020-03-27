@@ -72,15 +72,17 @@ router.post("/login", (req, res) => {
   User.find({ username })
     .then(response => {
       if (response.length > 0) {
-        const {_id,username,password,phone,email,role_id,create_time } = response[0];
+        const {role_id } = response[0];
+        result=response[0]
         Role.find({ _id: role_id }).then(response2 => {
           const {menus}=response2[0]
           // const result={"_id":_id,username,password,phone,email,role_id,create_timemenus}
+          result["menus"]=menus;
           if (response[0].password === encryption(password)) {
             res.json({
               status: 0,
               msg: "查询成功",
-              data:{}
+              data:result
             });
           } else {
             res.json({

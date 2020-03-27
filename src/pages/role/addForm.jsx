@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Form, Input } from 'antd'
-import PropTypes from 'prop-types'
 
 class AddForm extends Component {
   render() {
