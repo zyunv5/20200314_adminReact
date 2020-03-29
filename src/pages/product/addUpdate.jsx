@@ -5,7 +5,7 @@ import LinkButton from '../../component/link-button'
 import PicturesWall from './picturesWall'
 import RichTextEditor from './richTextEditor'
 import { reqAddOrUpdateProduct } from '../../api'
-import memoryUtils from '../../utils/memoryUtils'
+import { connect } from 'react-redux'
 
 const { TextArea } = Input
 
@@ -18,20 +18,15 @@ class ProductAddUpdate extends Component {
     this.editor = React.createRef()
   }
 
-  //组件卸载之前清除保存的数据
-  componentWillUnmount(){
-    memoryUtils.product={}
-  }
-
   render() {
-    const type = this.props.location.state[1]
+    const type = this.props.product[1]
     let [name, desc, price, imgs, detail] = ['', '', 0, [], '']
     if (type === 2) {
-      name = this.props.location.state[0].name
-      desc = this.props.location.state[0].desc
-      price = this.props.location.state[0].price
-      imgs = this.props.location.state[0].imgs
-      detail = this.props.location.state[0].detail
+      name = this.props.product[0].name
+      desc = this.props.product[0].desc
+      price = this.props.product[0].price
+      imgs = this.props.product[0].imgs
+      detail = this.props.product[0].detail
     }
 
     const title = (
@@ -50,19 +45,15 @@ class ProductAddUpdate extends Component {
     }
 
     const onFinish = async values => {
-      console.log('Success:', values)
-
       const imgs = this.pw.current.getImgs()
-      console.log(imgs)
 
       const detail = this.editor.current.getDetail()
-      console.log(detail)
 
       let productId = null,
         status = null
-      if (this.props.location.state[1] === 2) {
-        productId = this.props.location.state[0]._id
-        status = this.props.location.state[0].status
+      if (this.props.product[1] === 2) {
+        productId = this.props.product[0]._id
+        status = this.props.product[0].status
       }
 
       const product = { _id: productId, status, ...values, imgs: imgs, detail: detail }
@@ -73,8 +64,6 @@ class ProductAddUpdate extends Component {
       } else {
         message.error('失败')
       }
-
-      console.log(result)
     }
 
     return (
@@ -133,4 +122,10 @@ class ProductAddUpdate extends Component {
   }
 }
 
-export default ProductAddUpdate
+const mapStateToProps = state => {
+  return {
+    product: state.product
+  }
+}
+
+export default connect(mapStateToProps)(ProductAddUpdate)

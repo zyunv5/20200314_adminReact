@@ -31,7 +31,7 @@ class AddForm extends Component {
   //获取所有选项
   getMenus=()=>this.state.checkedKeys
 
-  
+
   componentWillMount() {
     //按照antd4的tree数据结构，这里已经是制作好的数据了，不需要二次转换了
     // this.treeNodes = this.getTreeNodes(menuList);
@@ -45,12 +45,10 @@ class AddForm extends Component {
     ];
 
     const onCheck = checkedKeys => {
-      // console.log(checkedKeys);
       this.setState({
         checkedKeys
       });
     };
-    
 
     return (
       <Fragment>

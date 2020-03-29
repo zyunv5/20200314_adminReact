@@ -4,12 +4,13 @@ import LinkButton from '../../component/link-button'
 import { reqProducts, reqSearchProducts, reqUpdateStatus } from '../../api'
 import { PAGE_SIZE } from '../../utils/constants'
 import './product.less'
-import memoryUtils from '../../utils/memoryUtils'
+import { connect } from 'react-redux'
+import { receiveProduct } from '../../redux/actions'
 
 const Option = Select.Option
 
 //product 的默认子路由组件
-export default class ProductHome extends PureComponent {
+class ProductHome extends PureComponent {
   state = {
     total: 0,
     products: [],
@@ -36,7 +37,6 @@ export default class ProductHome extends PureComponent {
       },
       {
         title: '状态',
-        // dataIndex: "status",
         render: product => {
           const { status, _id } = product
           return (
@@ -63,29 +63,32 @@ export default class ProductHome extends PureComponent {
     ]
   }
 
+  //跳转新增
+  showAdd = () => {
+    this.props.receiveProduct(['', 1])
+    this.props.history.push('/product/addupdate')
+  }
+
   //跳转详情
-  showDetail=(product)=>{
-    memoryUtils.product=product;
-    this.props.history.push("/product/detail");
+  showDetail = product => {
+    this.props.receiveProduct([product])
+    this.props.history.push('/product/detail')
   }
 
   //显示修改商品界面
-  showUpdate=(product)=>{
-    memoryUtils.product=product;
-    // this.props.history.push('/product/addUpdate', [product,2])
+  showUpdate = product => {
+    this.props.receiveProduct([product, 2])
     this.props.history.push('/product/addUpdate')
   }
 
   //获取指定页码的列表数据显示
   getProducts = async pageNum => {
-    //   console.log(pageNum, PAGE_SIZE);
     this.pageNum = pageNum //保存当前页码,以便今后继续使用
     this.setState({
       loading: true
     })
     //如果有值，进行表格数据搜索
     const { searchName, searchType } = this.state
-    // console.log(this.state, this.state.searchName)
     let result = null
     if (searchName) {
       result = await reqSearchProducts(pageNum, PAGE_SIZE, searchName, searchType)
@@ -146,7 +149,7 @@ export default class ProductHome extends PureComponent {
     )
 
     const extra = (
-      <Button type="primary" onClick={() => this.props.history.push('/product/addupdate',["",1])}>
+      <Button type="primary" onClick={() => this.showAdd()}>
         添加商品
       </Button>
     )
@@ -159,7 +162,7 @@ export default class ProductHome extends PureComponent {
           dataSource={products}
           columns={this.columns}
           pagination={{
-        current:this.pageNum,
+            current: this.pageNum,
             total,
             defaultPageSize: PAGE_SIZE,
             showQuickJumper: true,
@@ -170,3 +173,5 @@ export default class ProductHome extends PureComponent {
     )
   }
 }
+
+export default connect(null, { receiveProduct })(ProductHome)

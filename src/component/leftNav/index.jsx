@@ -63,7 +63,6 @@ class LeftNav extends Component {
   getMenuNodes = menuList => {
     //得到当前请求的路由路径
     const path = this.props.location.pathname;
-    // console.log(this.props);
 
     return menuList.reduce((pre, item) => {
       //向pre中添加Menu.item

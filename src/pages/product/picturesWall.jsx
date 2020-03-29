@@ -69,7 +69,6 @@ class PicturesWall extends Component {
         message.error('上传失败')
       }
     } else if (file.status === 'removed') {
-      // console.log(file.name)
       const result = await reqDeleteImg(file.name)
       if (result.status === 0) {
         message.success('图片删除成功')

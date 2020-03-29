@@ -5,7 +5,7 @@ import ProductHome from './home'
 import ProductAddUpdate from './addUpdate'
 import ProductDetail from './detail'
 
-export default class Product extends Component {
+ class Product extends Component {
   render() {
     return (
       <Switch>
@@ -17,3 +17,5 @@ export default class Product extends Component {
     )
   }
 }
+
+export default Product

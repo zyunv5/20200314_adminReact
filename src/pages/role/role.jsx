@@ -27,7 +27,6 @@ class Role extends Component {
   onRow = role => {
     return {
       onClick: event => {
-        // console.log(role,event);
         this.setState({ role })
       }
     }

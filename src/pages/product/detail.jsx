@@ -2,17 +2,13 @@ import React, { Component } from 'react'
 import { Card, List } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import LinkButton from '../../component/link-button'
-import memoryUtils from '../../utils/memoryUtils'
+import { connect } from 'react-redux'
 
 //product 的默认子路由组件
-export default class ProductDetail extends Component {
-  //组件卸载之前清除保存的数据
-  componentWillUnmount(){
-    memoryUtils.product={}
-  }
+class ProductDetail extends Component {
 
   render() {
-    const { name, desc, price, detail, imgs } = memoryUtils.product
+    const { name, desc, price, detail, imgs } = this.props.product[0]
     const title = (
       <span>
         <LinkButton>
@@ -57,3 +53,11 @@ export default class ProductDetail extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    product: state.product
+  }
+}
+
+export default connect(mapStateToProps)(ProductDetail)
