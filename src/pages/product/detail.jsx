@@ -1,29 +1,26 @@
-import React, { Component } from "react";
-import { Card, List } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import LinkButton from "../../component/link-button";
+import React, { Component } from 'react'
+import { Card, List } from 'antd'
+import { ArrowLeftOutlined } from '@ant-design/icons'
+import LinkButton from '../../component/link-button'
+import memoryUtils from '../../utils/memoryUtils'
 
 //product 的默认子路由组件
 export default class ProductDetail extends Component {
+  //组件卸载之前清除保存的数据
+  componentWillUnmount(){
+    memoryUtils.product={}
+  }
+
   render() {
-    const {
-      name,
-      desc,
-      price,
-      detail,
-      imgs
-    } = this.props.history.location.state;
+    const { name, desc, price, detail, imgs } = memoryUtils.product
     const title = (
       <span>
         <LinkButton>
-          <ArrowLeftOutlined
-            style={{ marginRight: 10, fontSize: 20 }}
-            onClick={() => this.props.history.goBack()}
-          />
+          <ArrowLeftOutlined style={{ marginRight: 10, fontSize: 20 }} onClick={() => this.props.history.goBack()} />
         </LinkButton>
         <span>商品详情</span>
       </span>
-    );
+    )
     return (
       <Card title={title} className="product-detail">
         <List bordered size="default">
@@ -46,8 +43,8 @@ export default class ProductDetail extends Component {
           <List.Item>
             <span className="left">商品图片：</span>
             <span>
-              {imgs.map((item,index) => {
-                return <img className="product-img" src={item} alt="img" key={index} />;
+              {imgs.map((item, index) => {
+                return <img className="product-img" src={item} alt="img" key={index} />
               })}
             </span>
           </List.Item>
@@ -57,6 +54,6 @@ export default class ProductDetail extends Component {
           </List.Item>
         </List>
       </Card>
-    );
+    )
   }
 }

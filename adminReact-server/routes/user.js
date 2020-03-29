@@ -71,20 +71,6 @@ router.post('/login', (req, res) => {
   User.find({ username })
     .then(response => {
       if (response.length > 0) {
-<<<<<<< HEAD
-        const {role_id } = response[0];
-        result=response[0]
-        Role.find({ _id: role_id }).then(response2 => {
-          const {menus}=response2[0]
-          // const result={"_id":_id,username,password,phone,email,role_id,create_timemenus}
-          result["menus"]=menus;
-          if (response[0].password === encryption(password)) {
-            res.json({
-              status: 0,
-              msg: "查询成功",
-              data:result
-            });
-=======
         const { role_id } = response[0]
         Role.find({ _id: role_id }).then(response2 => {
           if (response[0].password === encryption(password)) {
@@ -93,7 +79,6 @@ router.post('/login', (req, res) => {
               msg: '查询成功',
               data: { username: response[0].username, _id: response[0]._id, role_id: response[0].role_id, menus: response2[0].menus }
             })
->>>>>>> 9ece550ea52508282c418df5221390427e94416a
           } else {
             res.json({
               status: 1,

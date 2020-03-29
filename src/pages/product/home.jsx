@@ -4,6 +4,7 @@ import LinkButton from '../../component/link-button'
 import { reqProducts, reqSearchProducts, reqUpdateStatus } from '../../api'
 import { PAGE_SIZE } from '../../utils/constants'
 import './product.less'
+import memoryUtils from '../../utils/memoryUtils'
 
 const Option = Select.Option
 
@@ -53,13 +54,26 @@ export default class ProductHome extends PureComponent {
         render: product => {
           return (
             <span>
-              <LinkButton onClick={() => this.props.history.push('/product/detail', product)}>详情</LinkButton>
-              <LinkButton onClick={() => this.props.history.push('/product/addUpdate', [product,2])}>修改</LinkButton>
+              <LinkButton onClick={() => this.showDetail(product)}>详情</LinkButton>
+              <LinkButton onClick={() => this.showUpdate(product)}>修改</LinkButton>
             </span>
           )
         }
       }
     ]
+  }
+
+  //跳转详情
+  showDetail=(product)=>{
+    memoryUtils.product=product;
+    this.props.history.push("/product/detail");
+  }
+
+  //显示修改商品界面
+  showUpdate=(product)=>{
+    memoryUtils.product=product;
+    // this.props.history.push('/product/addUpdate', [product,2])
+    this.props.history.push('/product/addUpdate')
   }
 
   //获取指定页码的列表数据显示

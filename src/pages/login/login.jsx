@@ -125,4 +125,16 @@ class Login extends Component {
 // const WrapLogin = Form.create()(Login);
 // export default WrapLogin;
 
-export default connect(state => ({ user: state.user }), { login })(Login);
+const mapStateToProps=(state)=>{
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps=(dispatch)=>({
+  login:(username, password)=>{
+    dispatch(username, password)
+  }
+})
+
+export default connect(mapStateToProps, { login })(Login);

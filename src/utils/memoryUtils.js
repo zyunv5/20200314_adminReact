@@ -2,4 +2,5 @@
 
 export default {
     user:{},//保存当前登录的user
+    product:{},//指定当前的商品对象
 }
