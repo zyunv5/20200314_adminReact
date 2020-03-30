@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import memoryUtils from "../../utils/memoryUtils";
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { Layout } from 'antd'
 import LeftNav from '../../component/leftNav'

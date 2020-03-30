@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { Card, Button } from 'antd'
 import ReactEcharts from 'echarts-for-react'
 
-export default class Bar extends Component {
-  getOption = () => {
+const Bar = () => {
+  const getOption = () => {
     return {
       title: {
         text: 'ECharts 入门示例'
@@ -25,18 +25,16 @@ export default class Bar extends Component {
       ]
     }
   }
-  render() {
-    return (
-      <Fragment>
-        <Card>
-          <Button type="primary" onClick={this.update}>
-            更新
-          </Button>
-        </Card>
-        <Card title="柱状图一">
-          <ReactEcharts option={this.getOption()} />
-        </Card>
-      </Fragment>
-    )
-  }
+  return (
+    <Fragment>
+      <Card>
+        <Button type="primary">更新</Button>
+      </Card>
+      <Card title="柱状图一">
+        <ReactEcharts option={getOption()} />
+      </Card>
+    </Fragment>
+  )
 }
+
+export default Bar
