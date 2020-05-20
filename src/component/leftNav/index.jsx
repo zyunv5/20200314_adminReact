@@ -121,7 +121,7 @@ class LeftNav extends Component {
       <div className="left-nav">
         <Link to="/" className="left-nav-header">
           <img src={logo} alt="lgo" />
-          <h1>测试后台</h1>
+          <h1>Manage</h1>
         </Link>
         <Menu
           selectedKeys={[path]} //不用初始化属性，用这个，能更新变动
