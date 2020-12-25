@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const request=require('request')
 
 //实例化express对象
 var app = express();
@@ -24,18 +25,18 @@ const changeImg = require("./routes/changeImg");
 const role = require("./routes/role");
 
 //connect to mongoose
-mongoose
-  .connect("mongodb://localhost:27017/admin-react", {
-    //注意url地址最后面的地址是数据库的名称
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log("MongoDb");
-  })
-  .catch(err => {
-    console.log(err);
-  });
+// mongoose
+//   .connect("mongodb://localhost:27017/admin-react", {
+//     //注意url地址最后面的地址是数据库的名称
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+//   })
+//   .then(() => {
+//     console.log("MongoDb");
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   });
 
 //允许跨域
 app.all("*", function(req, res, next) {
@@ -54,6 +55,11 @@ app.use("/manage/category", category);
 app.use("/manage/product", product);
 app.use("/manage/img", changeImg);
 app.use("/manage/role", role);
+
+//  const appId = 'wxa64947f6b6549e88',appsecret = 'e4142f5dcf794710d8c0706bfd21f91d';
+//  request(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appsecret}`,function(error,response,body){
+//    console.log(error,response,body)
+//  });
 
 //监听服务器端口号
 const port = process.env.PORT || 5000;
